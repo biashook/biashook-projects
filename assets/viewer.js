@@ -67,14 +67,7 @@
 
   function show(p) {
     document.title = `${p.name} · BIASHOOK`;
-    const by = st => p.milestones.filter(m => m.status === st);
-    const list = arr => arr.map(R.milestoneView).join('') || '<p class="muted">없음</p>';
-    app.innerHTML = `${R.header(p)}
-      <h2>로드맵</h2>${R.roadmap(p, m => '#m-' + m.id)}
-      <h2>진행중 마일스톤</h2>${list(by('active'))}
-      <h2>예정 마일스톤</h2>${list(by('planned'))}
-      <h2>지난 결정 기록</h2>${list(by('done').reverse())}
-      <footer class="muted">최종 업데이트 ${p.meta.updatedAt ? new Date(p.meta.updatedAt).toLocaleString('ko-KR') : '-'} · 읽기 전용</footer>`;
+    app.innerHTML = R.projectPage(p, m => '#m-' + m.id);
   }
 
   let saved = null;

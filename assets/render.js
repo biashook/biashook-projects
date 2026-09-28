@@ -48,5 +48,16 @@
       ${d.choice ? `<div class="decision"><b>🧭 ${CHOICE[d.choice] || ''}</b>${d.reason ? `<div>이유: ${esc(d.reason)}</div>` : ''}${d.nextAction ? `<div>다음 액션: ${esc(d.nextAction)}</div>` : ''}</div>` : ''}</article>`;
   }
 
-  root.BTRender = { esc, fmt, period, header, roadmap, milestoneView, STATUS, MS_ICON, VERDICT, CHOICE };
+  function projectPage(p, linkFn) {
+    const by = st => p.milestones.filter(m => m.status === st);
+    const list = arr => arr.map(milestoneView).join('') || '<p class="muted">없음</p>';
+    return `${header(p)}
+      <h2>로드맵</h2>${roadmap(p, linkFn)}
+      <h2>진행중 마일스톤</h2>${list(by('active'))}
+      <h2>예정 마일스톤</h2>${list(by('planned'))}
+      <h2>지난 결정 기록</h2>${list(by('done').reverse())}
+      <footer class="muted">최종 업데이트 ${p.meta.updatedAt ? new Date(p.meta.updatedAt).toLocaleString('ko-KR') : '-'} · 읽기 전용</footer>`;
+  }
+
+  root.BTRender = { esc, fmt, period, header, roadmap, milestoneView, projectPage, STATUS, MS_ICON, VERDICT, CHOICE };
 })(this);
